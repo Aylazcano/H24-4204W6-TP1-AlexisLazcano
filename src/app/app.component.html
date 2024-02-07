@@ -22,7 +22,7 @@
         <!-- Affichage des albums de l'artistes 😩 -->
         <div class="row">
           <ng-container *ngFor="let a of albumList; let i = index">
-            <div class="col-3">
+            <div (click)="searchAlbumTracks(a.album, a.artist)" class="col-3">
               <div class="card mb-3">
                 <img src="{{ a.albumImg }}" class="card-img-top" alt="{{ a.album }}">
                 <div class="card-body">
