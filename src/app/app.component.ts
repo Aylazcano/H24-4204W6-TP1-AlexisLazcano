@@ -16,10 +16,10 @@ export class AppComponent {
   result: boolean = false;
   selectedAlbumResult: boolean = false;
   artist: string = "";
-  albumImg: string = "";
+  albumImg?: string = "";
   albumList: Album[] = [];
   selectedAlbum?: Album | null = null;
-  tracks: string[] = [];
+  tracks?: string[] = [];
   apiKey: string = "9a8a3facebbccaf363bb9fd68fa37abf";
 
   // CONSTRUCTEURS
@@ -47,9 +47,10 @@ export class AppComponent {
       this.selectedAlbumResult = true;
       let x = await lastValueFrom(this.http.get<any>("http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + this.apiKey + "&artist=" + pArtist + "&album=" + pAlbum + "&format=json"));
       console.log(x);
-      this.selectedAlbum = new Album(x.album.name, x.album.image[2]["#text"], x.album.artist);
-      for(let a of x.album){
-        this.tracks.push(a.tracks); 
+      this.selectedAlbum = new Album(x.album.name, x.album.image[3]["#text"], x.album.artist);
+      this.tracks = []; // Vider tracks
+      for(let a of x.album.tracks.track){
+        this.tracks.push(a.name); 
       }
     } 
     catch (error) {
@@ -68,6 +69,7 @@ export class AppComponent {
     this.albumImg = "";
     this.albumList = [];
     this.tracks = [];
+    this.selectedAlbum = null;
   }
 
 }

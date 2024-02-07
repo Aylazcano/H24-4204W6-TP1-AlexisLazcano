@@ -19,19 +19,18 @@
       <h2>Résultats</h2>
 
       <div *ngIf="result">
-        <div *ngIf="selectedAlbumResult">
+        <div class="row" *ngIf="selectedAlbumResult">
           <!-- Affichage des chansons de album 🤩 -->
-          <div class="row">
+          <div class="col">
             <h3>Détails de l'album "{{ selectedAlbum?.album }}"</h3>
           </div>
-          <div class="col-3">
-            <img src="{{ selectedAlbum?.album }}" alt="{{ selectedAlbum?.album }}" class="img-fluid">
+          <div>
+            <img src="{{ selectedAlbum?.albumImg }}" alt="{{ selectedAlbum?.album }}" class="img-fluid">
           </div>
           <div class="col">
-            <!-- Afficher la liste des pistes de l'album -->
             <h4>Pistes :</h4>
             <ul>
-              <li *ngFor="let t of tracks">{{ t }}</li>
+              <li *ngFor="let t of tracks; let i = index">{{i+1}} - {{ t }}</li>
             </ul>
           </div>
         </div>
