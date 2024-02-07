@@ -15,6 +15,7 @@ export class AppComponent {
   // VARIABLES
   result: boolean = false;
   artist: string = "";
+  tracks: string[] = [];
   albumImg: string = "";
   apiKey: string = "9a8a3facebbccaf363bb9fd68fa37abf";
   albumList: Album[] = [];
@@ -38,6 +39,16 @@ export class AppComponent {
     }
   }
 
+  async searchAlbumTracks(album: string, artist: string): Promise<void> {
+    try {
+      // REQUÊTE HTTP
+      let x = await lastValueFrom(this.http.get<any>("http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + this.apiKey + "&artist=" + artist + "&album=" + album + "&format=json"));
+      console.log(x);
+    } catch (error) {
+      console.error("Erreur lors de la recherche des chansons de l'album :", error);
+    }
+  }
+  
   newSearch(): void {
     this.clearResults();
   }
