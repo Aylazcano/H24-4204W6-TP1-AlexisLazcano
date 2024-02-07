@@ -1,4 +1,4 @@
   export class Album{
-    constructor(public albums : string, public albumImg : string){ 
+    constructor(public album : string, public albumImg : string, public artist : string){ 
     }
   }
