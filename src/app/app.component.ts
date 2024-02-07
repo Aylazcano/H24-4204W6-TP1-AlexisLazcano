@@ -14,11 +14,13 @@ export class AppComponent {
 
   // VARIABLES
   result: boolean = false;
+  selectedAlbumResult: boolean = false;
   artist: string = "";
-  tracks: string[] = [];
   albumImg: string = "";
-  apiKey: string = "9a8a3facebbccaf363bb9fd68fa37abf";
   albumList: Album[] = [];
+  selectedAlbum?: Album | null = null;
+  tracks: string[] = [];
+  apiKey: string = "9a8a3facebbccaf363bb9fd68fa37abf";
 
   // CONSTRUCTEURS
   constructor(public http: HttpClient) { }
@@ -39,12 +41,18 @@ export class AppComponent {
     }
   }
 
-  async searchAlbumTracks(album: string, artist: string): Promise<void> {
+  async searchAlbumTracks(pAlbum: string, pArtist: string): Promise<void> {
     try {
       // REQUÊTE HTTP
-      let x = await lastValueFrom(this.http.get<any>("http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + this.apiKey + "&artist=" + artist + "&album=" + album + "&format=json"));
+      this.selectedAlbumResult = true;
+      let x = await lastValueFrom(this.http.get<any>("http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=" + this.apiKey + "&artist=" + pArtist + "&album=" + pAlbum + "&format=json"));
       console.log(x);
-    } catch (error) {
+      this.selectedAlbum = new Album(x.album.name, x.album.image[2]["#text"], x.album.artist);
+      for(let a of x.album){
+        this.tracks.push(a.tracks); 
+      }
+    } 
+    catch (error) {
       console.error("Erreur lors de la recherche des chansons de l'album :", error);
     }
   }
@@ -55,8 +63,11 @@ export class AppComponent {
 
   clearResults(): void {
     this.result = false;
+    this.selectedAlbumResult = false;
     this.artist = "";
+    this.albumImg = "";
     this.albumList = [];
+    this.tracks = [];
   }
 
 }

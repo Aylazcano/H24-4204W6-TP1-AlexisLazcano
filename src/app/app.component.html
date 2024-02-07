@@ -19,23 +19,38 @@
       <h2>Résultats</h2>
 
       <div *ngIf="result">
-        <!-- Affichage des albums de l'artistes 😩 -->
-        <div class="row">
-          <ng-container *ngFor="let a of albumList; let i = index">
-            <div (click)="searchAlbumTracks(a.album, a.artist)" class="col-3">
-              <div class="card mb-3">
-                <img src="{{ a.albumImg }}" class="card-img-top" alt="{{ a.album }}">
-                <div class="card-body">
-                  <p class="card-title">{{ a.album }}</p>
-                </div>
+        <div *ngIf="selectedAlbumResult">
+          <!-- Affichage des chansons de album 🤩 -->
+          <div class="row">
+            <h3>Détails de l'album "{{ selectedAlbum?.album }}"</h3>
+          </div>
+          <div class="col-3">
+            <img src="{{ selectedAlbum?.album }}" alt="{{ selectedAlbum?.album }}" class="img-fluid">
+          </div>
+          <div class="col">
+            <!-- Afficher la liste des pistes de l'album -->
+            <h4>Pistes :</h4>
+            <ul>
+              <li *ngFor="let t of tracks">{{ t }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Affichage des albums de l'artistes 😩 -->
+      <div class="row">
+        <ng-container *ngFor="let a of albumList">
+          <div (click)="searchAlbumTracks(a.album, a.artist)" class="col-3 p-1">
+            <div class="card mb-3">
+              <img src="{{ a.albumImg }}" class="card-img-top" alt="{{ a.album }}">
+              <div class="card-body">
+                <p class="card-title">{{ a.album }}</p>
               </div>
             </div>
-            <!-- Si c'est le dernier album ou si on est à la fin de la ligne -->
-            <div *ngIf="(i + 1) % 4 === 0 || (i + 1) === albumList.length" class="w-90"></div>
-          </ng-container>
-        </div>
-
+          </div>
+        </ng-container>
       </div>
 
     </div>
+
   </div>
+</div>
